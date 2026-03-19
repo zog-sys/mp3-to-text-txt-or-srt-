@@ -1,0 +1,72 @@
+1
+00:00:00,000 --> 00:00:04,640
+Qu'est-ce que Claude Codde, pourquoi on l'entend et non en parler et en quoi c'est différent de ChatGPT ?
+
+2
+00:00:04,640 --> 00:00:05,680
+Je t'explique en 30 secondes.
+
+3
+00:00:05,680 --> 00:00:07,840
+A l'heure entre vous, vous êtes famillé avec les chatbots.
+
+4
+00:00:07,840 --> 00:00:11,240
+Vous lui posez une question, il vous répond, tu peux même lui demander de générer du code,
+
+5
+00:00:11,240 --> 00:00:13,680
+tu le copicoles et t'espère que ça fonctionne.
+
+6
+00:00:13,680 --> 00:00:15,560
+Claude Codde, il travaille complètement différent.
+
+7
+00:00:15,560 --> 00:00:19,160
+C'est un outil qui vit dans ton PC et dans ton terminal et là il va travailler.
+
+8
+00:00:19,160 --> 00:00:24,480
+Tu lui décris ce que tu veux, Claude il va explorer tes fichiers, les lire, comprendre le projet et écrire du code directement.
+
+9
+00:00:24,480 --> 00:00:27,680
+Il va lancer ses propres tests, s'il rencontre une erreur, il va la corriger
+
+10
+00:00:27,680 --> 00:00:29,280
+et il va continuer jusqu'à ce que ce soit bon.
+
+11
+00:00:29,280 --> 00:00:31,680
+Ton job maintenant c'est d'être le pilote, c'est toi l'orchestrateur.
+
+12
+00:00:31,680 --> 00:00:33,600
+Tu communiques la vision et il construit.
+
+13
+00:00:33,600 --> 00:00:37,160
+Les chatbots ils opèrent au niveau conversationnel, tu lui demandes, il te répond.
+
+14
+00:00:37,160 --> 00:00:39,400
+Claude Codde, il opère au niveau du projet.
+
+15
+00:00:39,400 --> 00:00:44,600
+Toi tu es le directeur et lui il construit et désormais n'importe qui peut construire et développer ce qu'il veut.
+
+16
+00:00:44,600 --> 00:00:47,120
+Si t'internet, application, logiciel, SaaS.
+
+17
+00:00:47,120 --> 00:00:50,320
+Alors si tu veux un guide sur comment l'installer et l'utiliser, comment ce que tu veux.
+
+18
+00:00:50,320 --> 00:00:52,320
+Sous cette vidéo et je te l'envoie du moment que tu me follow.
+

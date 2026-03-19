@@ -1,0 +1,72 @@
+1
+00:00:00,000 --> 00:00:02,760
+Tout le monde parle de Cloud Code, mais personne ne montre comment l'installer.
+
+2
+00:00:02,760 --> 00:00:05,120
+Alors je vais le faire pour vous et vous allez voir qu'il y a un méchant.
+
+3
+00:00:05,120 --> 00:00:07,040
+Première étape, vous allez installer VS Code.
+
+4
+00:00:07,040 --> 00:00:09,640
+Voyez ça comme un éditeur de texte avec beaucoup de fonctionnalités.
+
+5
+00:00:09,640 --> 00:00:10,920
+Une fois installé, vous l'ouvrez.
+
+6
+00:00:10,920 --> 00:00:13,320
+Ensuite, vous allez cliquer sur l'onglet Extensions.
+
+7
+00:00:13,320 --> 00:00:16,880
+Vous allez chercher Cloud et vous installer l'extension officielle de Cloud
+
+8
+00:00:16,880 --> 00:00:18,040
+avec la petite coche bleue.
+
+9
+00:00:18,040 --> 00:00:21,600
+Une fois installé, vous allez avoir cette petite icône en haut à droite de votre écran.
+
+10
+00:00:21,600 --> 00:00:24,120
+Vous cliquez dessus, vous cliquez sur le premier bouton en orange.
+
+11
+00:00:24,120 --> 00:00:27,320
+Ça va ouvrir votre navigateur web pour vous connecter à votre compte Cloud.
+
+12
+00:00:27,320 --> 00:00:29,680
+Si vous n'avez pas encore de compte, vous pouvez en créer un à ce moment-là.
+
+13
+00:00:29,680 --> 00:00:31,440
+Il vous faut un abonnement pour pouvoir l'utiliser.
+
+14
+00:00:31,440 --> 00:00:33,760
+Et vous êtes tout bon, vous pouvez commencer à travailler avec Cloud.
+
+15
+00:00:33,760 --> 00:00:35,600
+Il a accès à vos fichiers, à vos projets.
+
+16
+00:00:35,600 --> 00:00:38,360
+Et c'est une fenêtre de chatte, rien de plus basique, mais très très très puissant.
+
+17
+00:00:38,360 --> 00:00:41,160
+Si tu veux apprendre à tout construire avec Cloud et lia,
+
+18
+00:00:41,160 --> 00:00:44,160
+commente ce que tu veux sous cette vidéo et je t'envoie ce dont t'as besoin.
+

@@ -1,0 +1,8 @@
+[00:00:00] Donc ça c'est un plugin qui fait que chaque terminal cloud que vous allez avoir est transformé en un personnage dans un bureau virtuel
+[00:00:06] et donc vous allez avoir comme ça tous vos cloud représentés visuellement pour pouvoir les suivre et voir ce qu'ils font,
+[00:00:11] ceux qui sont inactifs, ceux qui sont actifs, et mine de rien au-delà de l'aspect sympa.
+[00:00:16] Bah ça règle quand même un souci qui est que quand on a 500 terminaux qui sont ouverts,
+[00:00:20] eh ben on sait pas qu'il y en a un qui est stoppé, qui a besoin de notre autorisation pour effectuer une action
+[00:00:24] et tout simplement voir ceux qui sont inactifs pour leur redonner notre tâche.
+[00:00:27] Donc c'est très simple à installer, vous avez juste à envoyer le lien à votre cloud code et lui dire de l'installer.
+[00:00:32] Et si vous voulez le recevoir, vous avez juste à commenter ce que vous voulez et je vous l'envoie du moment que tu es follow sur mon Insta.

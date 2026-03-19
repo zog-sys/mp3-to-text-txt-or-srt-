@@ -1,0 +1,64 @@
+1
+00:00:00,000 --> 00:00:02,760
+Tout le monde parle de cloud code, mais personne monte comment l'installer.
+
+2
+00:00:02,760 --> 00:00:05,160
+Alors je vais le faire pour vous et vous allez voir qu'il y a un méchant.
+
+3
+00:00:05,160 --> 00:00:07,080
+Première étape, vous allez installer VS code.
+
+4
+00:00:07,080 --> 00:00:09,680
+Vous voyez ça comme un digitaire de texte avec beaucoup de fonctionnalités.
+
+5
+00:00:09,680 --> 00:00:10,960
+Une fois installé, vous l'ouvrez.
+
+6
+00:00:10,960 --> 00:00:13,360
+Ensuite, vous allez cliquer sur l'onglet Extention,
+
+7
+00:00:13,360 --> 00:00:18,080
+vous allez chercher Cloud et vous installez l'extension officielle de Cloud avec la petite coach bleu.
+
+8
+00:00:18,080 --> 00:00:21,640
+Une fois installé, vous allez avoir cette petite icon en haut à droite de votre écran.
+
+9
+00:00:21,640 --> 00:00:24,160
+Vous cliquez dessus, vous cliquez sur le premier bouton en orange.
+
+10
+00:00:24,160 --> 00:00:27,360
+Ça va ouvrir votre navigator web pour vous connecter à votre compte Cloud.
+
+11
+00:00:27,360 --> 00:00:29,720
+Si vous n'avez pas encore de compte, vous pouvez en créer un Asmon là.
+
+12
+00:00:29,720 --> 00:00:31,480
+Il faut un abonnement pour pouvoir l'utiliser.
+
+13
+00:00:31,480 --> 00:00:35,600
+Et vous êtes au bon, vous pouvez commencer à travailler avec Cloud il a accès à vos fichiers, à vos projets.
+
+14
+00:00:35,600 --> 00:00:38,360
+Et c'est une folette de chat rien plus basique, mais très très puissant.
+
+15
+00:00:38,360 --> 00:00:41,160
+Si tu vas apprendre à tout construire avec Cloud et LIA,
+
+16
+00:00:41,160 --> 00:00:44,200
+commente ce que tu veux sous cette vidéo et je t'envoie ce dont t'as besoin.
+

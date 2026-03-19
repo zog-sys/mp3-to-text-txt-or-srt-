@@ -1,0 +1,35 @@
+VIDTXT/
+│
+├── README.md                    # Documentation + instructions d'installation
+├── requirements.txt             # Dépendances Python
+├── project_structure.txt        # Ce fichier
+│
+├── backend/
+│   ├── __init__.py              # Package Python (vide)
+│   ├── main.py                  # Serveur FastAPI :
+│   │                            #   - Route GET  /              → index.html
+│   │                            #   - Route POST /api/upload    → reçoit le fichier, crée la tâche
+│   │                            #   - Route WS   /ws/{task_id}  → flux de progression temps réel
+│   │                            #   - Route GET  /api/download/{task_id}/{fmt}
+│   │                            #   - Mount /static             → dossier frontend/
+│   └── transcriber.py           # Module de transcription :
+│                                #   - TranscriptionManager      → gestion des tâches
+│                                #   - run_transcription()       → exécuté dans un thread séparé
+│                                #   - fmt_srt() / fmt_display() → utilitaires timestamps
+│
+├── frontend/
+│   └── index.html               # Interface utilisateur complète (Tailwind CDN + Vanilla JS) :
+│                                #   - Zone drag & drop upload (MP4/MP3, max 500 Mo)
+│                                #   - Sélecteur de modèle (tiny → large-v3)
+│                                #   - Sélecteur de langue (auto / fr / en / es / de / it)
+│                                #   - Toggle GPU
+│                                #   - Barre de progression live via WebSocket
+│                                #   - Flux de segments en temps réel
+│                                #   - Transcription finale avec timestamps
+│                                #   - Boutons téléchargement .txt et .srt
+│                                #   - Bouton copier dans le presse-papier
+│
+├── uploads/                     # Fichiers audio/vidéo temporaires (supprimés après transcription)
+└── outputs/                     # Résultats générés :
+                                 #   - {task_id}.txt  → transcription avec timestamps [HH:MM:SS]
+                                 #   - {task_id}.srt  → sous-titres format SubRip

@@ -1,0 +1,44 @@
+1
+00:00:00,000 --> 00:00:04,120
+Ça, c'est un nouvel outil qui vient de sortir et il est déjà classé numéro un pour le design de site web.
+
+2
+00:00:04,120 --> 00:00:08,960
+Il crée des layouts propres, professionnels, modernes et surtout des animations qui sont honnêtement ultra fluides.
+
+3
+00:00:08,960 --> 00:00:10,840
+Et le plus fou dans tout ça, c'est que c'est totalement gratuit.
+
+4
+00:00:10,840 --> 00:00:13,520
+Mais il y a encore un truc, c'est qu'il va pas juste te donner une page statique.
+
+5
+00:00:13,520 --> 00:00:16,640
+Non, il va te donner le prompt exact qui a servi à le créer.
+
+6
+00:00:16,640 --> 00:00:18,960
+En gros, choisir le style que tu aimes, tu copies le prompt,
+
+7
+00:00:18,960 --> 00:00:24,520
+tu le colle dans Cursor, Loaveable, Cloudcode, Codex, que tu veux et tu obtiens exactement le même design
+
+8
+00:00:24,520 --> 00:00:27,720
+que tu peux modifier, customiser à ta sauce comme tu le veux.
+
+9
+00:00:27,760 --> 00:00:30,360
+C'est littéralement une cheat code pour un design parfait.
+
+10
+00:00:30,360 --> 00:00:35,360
+Et ça change de cette vibe un peu AI-slop qu'on peut avoir sur tous les sites qu'on voit vibe-coded.
+
+11
+00:00:35,360 --> 00:00:39,520
+Si tu veux le lien, tu peux commenter ce que tu veux en toute cette vidéo et je te l'envoie en DM du moment que tu me follow.
+

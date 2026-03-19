@@ -1,0 +1,36 @@
+1
+00:00:00,000 --> 00:00:03,280
+Ça c'est un répertoire de plusieurs centaines d'API gratuites que tu peux utiliser dès
+
+2
+00:00:03,280 --> 00:00:04,280
+maintenant avec l'OTCODE.
+
+3
+00:00:04,280 --> 00:00:07,960
+Elles sont organisées par catégories, finance, news, divertissement et bien plus.
+
+4
+00:00:07,960 --> 00:00:11,040
+Si tu construis un logiciel de finance, tu peux le connecter à une API de finance et
+
+5
+00:00:11,040 --> 00:00:14,280
+récupérer les données des marchés en temps réel par exemple dans ton application.
+
+6
+00:00:14,280 --> 00:00:17,320
+Ce répertoire est parfait pour les personnes qui créent des logiciels ou des sites, des
+
+7
+00:00:17,320 --> 00:00:20,360
+outils IA ou même des automatisations et c'est complètement gratuit.
+
+8
+00:00:20,360 --> 00:00:23,080
+Si tu veux l'essayer, tu peux commenter ce que tu veux sur cette vidéo et je te l'envoie
+
+9
+00:00:23,080 --> 00:00:23,760
+du monde que tu me folies.
+

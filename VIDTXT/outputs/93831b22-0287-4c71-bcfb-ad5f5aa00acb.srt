@@ -1,0 +1,100 @@
+1
+00:00:00,000 --> 00:00:02,480
+Qu'est-ce que Cloud Code ? Pourquoi on l'entend énormément parler ?
+
+2
+00:00:02,480 --> 00:00:04,640
+Et en quoi c'est différent de ChatGPT ?
+
+3
+00:00:04,640 --> 00:00:05,680
+Je t'explique en 30 secondes.
+
+4
+00:00:05,680 --> 00:00:07,840
+La plupart d'entre vous, vous êtes familier avec les Chatbots.
+
+5
+00:00:07,840 --> 00:00:09,480
+Vous lui posez une question, il vous répond.
+
+6
+00:00:09,480 --> 00:00:11,280
+Tu peux même lui demander de générer du code.
+
+7
+00:00:11,280 --> 00:00:13,640
+Tu le copie-colle et t'espères que ça fonctionne.
+
+8
+00:00:13,640 --> 00:00:15,560
+Cloud Code, il travaille complètement différemment.
+
+9
+00:00:15,560 --> 00:00:18,320
+C'est un outil qui vit dans ton PC, dans ton terminal.
+
+10
+00:00:18,320 --> 00:00:19,120
+Et là, il va travailler.
+
+11
+00:00:19,120 --> 00:00:20,480
+Tu lui décris ce que tu veux.
+
+12
+00:00:20,480 --> 00:00:24,480
+Cloud, il va explorer tes fichiers, les lire, comprendre le projet et écrire du code directement.
+
+13
+00:00:24,480 --> 00:00:25,840
+Il va lancer ses propres tests.
+
+14
+00:00:25,880 --> 00:00:29,280
+S'il rencontre une erreur, il va la corriger et il va continuer jusqu'à ce que ce soit bon.
+
+15
+00:00:29,280 --> 00:00:30,680
+Ton job maintenant, c'est d'être le pilote.
+
+16
+00:00:30,680 --> 00:00:31,680
+C'est toi l'orchestrateur.
+
+17
+00:00:31,680 --> 00:00:33,600
+Tu communiques la vision et il construit.
+
+18
+00:00:33,600 --> 00:00:35,920
+Les Chatbots, ils opèrent au niveau conversationnel.
+
+19
+00:00:35,920 --> 00:00:37,160
+Tu lui demandes, il te répond.
+
+20
+00:00:37,160 --> 00:00:39,400
+Cloud Code, il opère au niveau du projet.
+
+21
+00:00:39,400 --> 00:00:41,120
+Toi, tu es le directeur et lui, il construit.
+
+22
+00:00:41,120 --> 00:00:44,600
+Et désormais, n'importe qui peut construire et développer ce qu'il veut.
+
+23
+00:00:44,600 --> 00:00:47,160
+Site internet, applications, logiciels, SaaS.
+
+24
+00:00:47,160 --> 00:00:49,520
+Alors si tu veux un guide sur comment l'installer et l'utiliser,
+
+25
+00:00:49,520 --> 00:00:52,280
+commente ce que tu veux sous cette vidéo et je te l'envoie du moment que tu me follows.
+

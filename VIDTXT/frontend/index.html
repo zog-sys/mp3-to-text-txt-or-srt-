@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VidTXT — Transcription Locale</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { DEFAULT: '#a855f7', dark: '#7c3aed', light: '#c084fc' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Scrollbar personnalisée */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #18181b; }
+    ::-webkit-scrollbar-thumb { background: #52525b; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #a855f7; }
+
+    /* Animation shimmer pour la barre de progression */
+    @keyframes shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+    .progress-bar-active {
+      background: linear-gradient(90deg, #7c3aed 0%, #a855f7 40%, #c084fc 60%, #7c3aed 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.8s linear infinite;
+    }
+
+    /* Entrée animée des segments */
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .segment-enter { animation: fadeSlideUp 0.25s ease-out forwards; }
+
+    /* Zone de drop active */
+    .drop-active {
+      border-color: #a855f7 !important;
+      background-color: rgba(168, 85, 247, 0.06) !important;
+      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+    }
+
+    /* Pulse pour le point de statut "en cours" */
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .status-blink { animation: blink 1.4s ease-in-out infinite; }
+
+    /* Transition douce pour les sections */
+    .section-fade { transition: opacity 0.3s ease, transform 0.3s ease; }
+    .section-hidden { opacity: 0; transform: translateY(12px); pointer-events: none; }
+  </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans antialiased">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!--  HEADER                                                                 -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <header class="sticky top-0 z-20 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
+    <div class="max-w-3xl mx-auto px-5 py-3 flex items-center gap-3">
+      <!-- Logo -->
+      <div class="flex items-center justify-center w-9 h-9 rounded-xl bg-purple-600 shadow-lg shadow-purple-900/40 flex-shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+        </svg>
+      </div>
+      <div class="leading-none">
+        <span class="font-bold text-base tracking-tight">VidTXT</span>
+        <span class="block text-xs text-zinc-500 mt-0.5">Transcription locale · Zéro cloud</span>
+      </div>
+      <div class="ml-auto flex items-center gap-2">
+        <span class="hidden sm:inline text-xs text-zinc-500 bg-zinc-800/70 border border-zinc-700/50 px-2 py-1 rounded-md">faster-whisper</span>
+        <span id="gpuBadge" class="hidden text-xs text-green-400 bg-green-900/30 border border-green-800/50 px-2 py-1 rounded-md">GPU</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!--  MAIN                                                                   -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <main class="max-w-3xl mx-auto px-5 py-8 space-y-5">
+
+    <!-- ────────────────────────────────────────────────────────────────────
+         SECTION UPLOAD
+    ──────────────────────────────────────────────────────────────────────── -->
+    <section id="uploadSection">
+
+      <!-- Zone drag & drop -->
+      <div
+        id="dropzone"
+        class="relative border-2 border-dashed border-zinc-700 rounded-2xl p-10 text-center cursor-pointer
+               hover:border-purple-600 hover:bg-purple-950/10 transition-all duration-200 group"
+        onclick="document.getElementById('fileInput').click()"
+      >
+        <input id="fileInput" type="file" accept=".mp4,.mp3" class="hidden" />
+
+        <!-- Icône upload -->
+        <div class="mx-auto w-14 h-14 rounded-2xl bg-zinc-800 group-hover:bg-zinc-700 flex items-center justify-center mb-4 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-zinc-400 group-hover:text-purple-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+          </svg>
+        </div>
+
+        <p class="text-zinc-300 font-medium text-sm">Glissez un fichier ici ou <span class="text-purple-400 underline underline-offset-2">parcourez</span></p>
+        <p class="text-zinc-500 text-xs mt-1">MP4 ou MP3 · Maximum 500 Mo</p>
+
+        <!-- Infos fichier sélectionné (cachées par défaut) -->
+        <div id="fileInfo" class="hidden mt-5 pt-5 border-t border-zinc-700">
+          <div class="flex items-center justify-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-zinc-700 flex items-center justify-center flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+              </svg>
+            </div>
+            <div class="text-left min-w-0">
+              <p id="fileName" class="text-sm font-medium text-zinc-200 truncate max-w-xs"></p>
+              <p id="fileSize" class="text-xs text-zinc-500"></p>
+            </div>
+            <button
+              onclick="event.stopPropagation(); clearFile()"
+              class="ml-2 text-zinc-500 hover:text-red-400 transition-colors flex-shrink-0"
+              title="Supprimer"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Options -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+
+        <!-- Modèle -->
+        <div class="space-y-1.5">
+          <label class="text-xs text-zinc-400 font-medium uppercase tracking-wide">Modèle</label>
+          <select id="modelSelect" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30 cursor-pointer appearance-none transition-colors">
+            <option value="tiny">tiny — 39 Mo · très rapide</option>
+            <option value="base" selected>base — 74 Mo · rapide</option>
+            <option value="small">small — 244 Mo · équilibré</option>
+            <option value="medium">medium — 769 Mo · précis</option>
+            <option value="large-v3">large-v3 — 3 Go · excellent</option>
+          </select>
+        </div>
+
+        <!-- Langue -->
+        <div class="space-y-1.5">
+          <label class="text-xs text-zinc-400 font-medium uppercase tracking-wide">Langue</label>
+          <select id="langSelect" class="w-full bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 text-sm text-zinc-200 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30 cursor-pointer appearance-none transition-colors">
+            <option value="auto" selected>Détection automatique</option>
+            <option value="fr">Français</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+            <option value="it">Italiano</option>
+            <option value="pt">Português</option>
+            <option value="nl">Nederlands</option>
+            <option value="ja">日本語</option>
+            <option value="zh">中文</option>
+            <option value="ar">العربية</option>
+          </select>
+        </div>
+
+        <!-- GPU toggle -->
+        <div class="space-y-1.5">
+          <label class="text-xs text-zinc-400 font-medium uppercase tracking-wide">Accélération</label>
+          <div class="flex items-center gap-3 bg-zinc-900 border border-zinc-700 rounded-xl px-3 py-2.5 h-[42px]">
+            <button
+              id="gpuToggle"
+              role="switch"
+              aria-checked="false"
+              onclick="toggleGPU()"
+              class="relative w-9 h-5 rounded-full bg-zinc-700 transition-colors duration-200 focus:outline-none flex-shrink-0"
+            >
+              <span class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200 gpu-thumb"></span>
+            </button>
+            <span id="gpuLabel" class="text-sm text-zinc-400">CPU uniquement</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bouton principal -->
+      <button
+        id="transcribeBtn"
+        onclick="startTranscription()"
+        disabled
+        class="mt-4 w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200
+               bg-zinc-800 text-zinc-500 cursor-not-allowed
+               disabled:opacity-60"
+      >
+        Sélectionnez un fichier pour continuer
+      </button>
+
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────
+         SECTION PROGRESSION
+    ──────────────────────────────────────────────────────────────────────── -->
+    <section id="progressSection" class="hidden">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4">
+
+        <!-- En-tête statut -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span id="statusDot" class="w-2 h-2 rounded-full bg-purple-500 status-blink flex-shrink-0"></span>
+            <span id="statusText" class="text-sm text-zinc-300">Initialisation…</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="detectedLang" class="hidden text-xs bg-zinc-800 border border-zinc-700 text-zinc-300 px-2 py-0.5 rounded-md"></span>
+            <span id="progressPercent" class="text-sm font-mono font-medium text-purple-400">0%</span>
+          </div>
+        </div>
+
+        <!-- Barre de progression -->
+        <div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+          <div
+            id="progressBar"
+            class="h-full rounded-full transition-[width] duration-300 ease-out progress-bar-active"
+            style="width: 0%"
+          ></div>
+        </div>
+
+        <!-- Flux de segments en direct -->
+        <div class="space-y-1.5">
+          <p class="text-xs text-zinc-500 font-medium uppercase tracking-wide">Transcription en direct</p>
+          <div
+            id="liveSegments"
+            class="h-48 overflow-y-auto rounded-xl bg-zinc-950 border border-zinc-800 p-3 space-y-2 scroll-smooth"
+          >
+            <p class="text-xs text-zinc-600 italic">Les segments apparaîtront ici…</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────
+         SECTION RÉSULTATS
+    ──────────────────────────────────────────────────────────────────────── -->
+    <section id="resultsSection" class="hidden">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 space-y-4">
+
+        <!-- En-tête résultats -->
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 rounded-lg bg-green-900/50 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-zinc-100">Transcription terminée</p>
+              <p id="resultMeta" class="text-xs text-zinc-500"></p>
+            </div>
+          </div>
+          <!-- Bouton copier -->
+          <button
+            onclick="copyTranscript()"
+            id="copyBtn"
+            class="flex items-center gap-1.5 text-xs text-zinc-400 hover:text-zinc-200 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 px-3 py-1.5 rounded-lg transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            Copier
+          </button>
+        </div>
+
+        <!-- Transcription complète -->
+        <div
+          id="transcriptContainer"
+          class="max-h-96 overflow-y-auto rounded-xl bg-zinc-950 border border-zinc-800 p-4 space-y-2"
+        ></div>
+
+        <!-- Boutons de téléchargement -->
+        <div class="flex items-center gap-3 pt-1">
+          <p class="text-xs text-zinc-500 mr-auto">Télécharger :</p>
+          <button
+            id="downloadTxt"
+            onclick="downloadFile('txt')"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium
+                   bg-purple-600 hover:bg-purple-500 text-white transition-colors shadow-lg shadow-purple-900/30"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            .txt
+          </button>
+          <button
+            id="downloadSrt"
+            onclick="downloadFile('srt')"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium
+                   bg-zinc-700 hover:bg-zinc-600 text-zinc-100 border border-zinc-600 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+            </svg>
+            .srt
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Bouton nouvelle transcription -->
+      <button
+        onclick="reset()"
+        class="mt-3 w-full py-2.5 rounded-xl text-sm text-zinc-400 hover:text-zinc-200
+               bg-transparent hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-600
+               transition-all duration-200 flex items-center justify-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Nouvelle transcription
+      </button>
+    </section>
+
+    <!-- ────────────────────────────────────────────────────────────────────
+         SECTION ERREUR
+    ──────────────────────────────────────────────────────────────────────── -->
+    <section id="errorSection" class="hidden">
+      <div class="bg-red-950/30 border border-red-800/50 rounded-2xl p-5">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-lg bg-red-900/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-semibold text-red-300">Une erreur est survenue</p>
+            <p id="errorText" class="text-xs text-red-400/80 mt-1 break-words"></p>
+          </div>
+        </div>
+        <button
+          onclick="reset()"
+          class="mt-4 text-xs text-red-400 hover:text-red-200 underline underline-offset-2 transition-colors"
+        >
+          Réessayer
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!--  JAVASCRIPT                                                             -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <script>
+    // ── État global ───────────────────────────────────────────────────────────
+    let currentTaskId  = null;
+    let ws             = null;
+    let useGPU         = false;
+    let allSegments    = [];   // segments reçus pour la transcription complète
+    let isProcessing   = false;
+    let selectedFile   = null; // fichier sélectionné (drag&drop ou input)
+
+    // ── Références DOM ────────────────────────────────────────────────────────
+    const $ = id => document.getElementById(id);
+
+    const dropzone        = $('dropzone');
+    const fileInput       = $('fileInput');
+    const fileInfoDiv     = $('fileInfo');
+    const fileNameEl      = $('fileName');
+    const fileSizeEl      = $('fileSize');
+    const transcribeBtn   = $('transcribeBtn');
+    const modelSelect     = $('modelSelect');
+    const langSelect      = $('langSelect');
+    const gpuToggle       = $('gpuToggle');
+    const gpuLabel        = $('gpuLabel');
+    const gpuBadge        = $('gpuBadge');
+
+    const uploadSection   = $('uploadSection');
+    const progressSection = $('progressSection');
+    const resultsSection  = $('resultsSection');
+    const errorSection    = $('errorSection');
+
+    const statusDot       = $('statusDot');
+    const statusText      = $('statusText');
+    const progressBar     = $('progressBar');
+    const progressPercent = $('progressPercent');
+    const detectedLang    = $('detectedLang');
+    const liveSegments    = $('liveSegments');
+
+    const transcriptContainer = $('transcriptContainer');
+    const resultMeta          = $('resultMeta');
+    const errorText           = $('errorText');
+
+
+    // ── Drag & Drop ───────────────────────────────────────────────────────────
+
+    dropzone.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (!isProcessing) dropzone.classList.add('drop-active');
+    });
+
+    dropzone.addEventListener('dragleave', e => {
+      if (!dropzone.contains(e.relatedTarget)) dropzone.classList.remove('drop-active');
+    });
+
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('drop-active');
+      if (isProcessing) return;
+      const files = e.dataTransfer.files;
+      if (files.length > 0) handleFileSelect(files[0]);
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) handleFileSelect(fileInput.files[0]);
+    });
+
+
+    // ── Gestion du fichier sélectionné ────────────────────────────────────────
+
+    function handleFileSelect(file) {
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (!['mp4', 'mp3'].includes(ext)) {
+        showError(`Format "${ext}" non supporté. Utilisez un fichier .mp4 ou .mp3.`);
+        return;
+      }
+
+      const MAX = 500 * 1024 * 1024;
+      if (file.size > MAX) {
+        showError('Fichier trop volumineux. La limite est de 500 Mo.');
+        return;
+      }
+
+      // Stockage du fichier (fonctionne aussi pour le drag & drop)
+      selectedFile = file;
+
+      // Affichage des infos fichier
+      fileNameEl.textContent = file.name;
+      fileSizeEl.textContent = formatSize(file.size);
+      fileInfoDiv.classList.remove('hidden');
+
+      // Activation du bouton
+      transcribeBtn.disabled = false;
+      transcribeBtn.className = `mt-4 w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200
+        bg-purple-600 hover:bg-purple-500 active:scale-[0.99] text-white shadow-lg shadow-purple-900/30 cursor-pointer`;
+      transcribeBtn.textContent = 'Lancer la transcription';
+    }
+
+    function clearFile() {
+      selectedFile = null;
+      fileInput.value = '';
+      fileInfoDiv.classList.add('hidden');
+      transcribeBtn.disabled = true;
+      transcribeBtn.className = `mt-4 w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200
+        bg-zinc-800 text-zinc-500 cursor-not-allowed disabled:opacity-60`;
+      transcribeBtn.textContent = 'Sélectionnez un fichier pour continuer';
+    }
+
+
+    // ── Toggle GPU ────────────────────────────────────────────────────────────
+
+    function toggleGPU() {
+      useGPU = !useGPU;
+      gpuToggle.setAttribute('aria-checked', useGPU);
+      gpuToggle.classList.toggle('bg-purple-600', useGPU);
+      gpuToggle.classList.toggle('bg-zinc-700', !useGPU);
+      gpuToggle.querySelector('.gpu-thumb').style.transform = useGPU ? 'translateX(16px)' : 'translateX(0)';
+      gpuLabel.textContent = useGPU ? 'GPU activé' : 'CPU uniquement';
+      gpuLabel.className   = useGPU ? 'text-sm text-purple-400' : 'text-sm text-zinc-400';
+      gpuBadge.classList.toggle('hidden', !useGPU);
+    }
+
+
+    // ── Lancement de la transcription ─────────────────────────────────────────
+
+    async function startTranscription() {
+      const file = selectedFile || fileInput.files[0];
+      if (!file || isProcessing) return;
+
+      isProcessing  = true;
+      allSegments   = [];
+      currentTaskId = null;
+
+      // Passage à la section progression
+      showSection('progress');
+      setStatus('Envoi du fichier…');
+      setProgress(0);
+      liveSegments.innerHTML = '<p class="text-xs text-zinc-600 italic">Les segments apparaîtront ici…</p>';
+      detectedLang.classList.add('hidden');
+
+      // Désactivation des contrôles
+      transcribeBtn.disabled = true;
+      transcribeBtn.textContent = 'Transcription en cours…';
+
+      // ── Upload ──────────────────────────────────────────────────────────────
+      const formData = new FormData();
+      formData.append('file',     file);
+      formData.append('model',    modelSelect.value);
+      formData.append('language', langSelect.value);
+      formData.append('use_gpu',  useGPU);
+
+      let uploadRes;
+      try {
+        uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+      } catch (e) {
+        showError('Impossible de contacter le serveur. Vérifiez que le backend est lancé.');
+        return;
+      }
+
+      if (!uploadRes.ok) {
+        let detail = 'Erreur lors de l\'upload.';
+        try { detail = (await uploadRes.json()).detail ?? detail; } catch (_) {}
+        showError(detail);
+        return;
+      }
+
+      const { task_id } = await uploadRes.json();
+      currentTaskId = task_id;
+
+      // ── WebSocket ────────────────────────────────────────────────────────────
+      connectWebSocket(task_id);
+    }
+
+
+    // ── WebSocket ─────────────────────────────────────────────────────────────
+
+    function connectWebSocket(taskId) {
+      const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+      ws = new WebSocket(`${proto}//${location.host}/ws/${taskId}`);
+
+      ws.onopen = () => setStatus('Connexion établie — démarrage…');
+
+      ws.onmessage = ({ data }) => {
+        try {
+          handleMessage(JSON.parse(data));
+        } catch (e) {
+          console.error('Message WebSocket invalide :', e);
+        }
+      };
+
+      ws.onerror = () => showError('Erreur de connexion WebSocket.');
+
+      ws.onclose = () => {
+        // Si on ferme avant d'avoir reçu "done" ou "error" : connexion perdue
+        if (isProcessing) {
+          showError('La connexion avec le serveur a été interrompue.');
+        }
+      };
+    }
+
+
+    // ── Traitement des messages WebSocket ────────────────────────────────────
+
+    function handleMessage(msg) {
+      switch (msg.type) {
+
+        case 'status':
+          setStatus(msg.message);
+          break;
+
+        case 'language': {
+          // Affiche la langue détectée et la durée
+          const langNames = {
+            fr:'Français', en:'English', es:'Español', de:'Deutsch',
+            it:'Italiano', pt:'Português', nl:'Nederlands', ja:'日本語',
+            zh:'中文', ar:'العربية'
+          };
+          const langDisplay = langNames[msg.language] ?? msg.language.toUpperCase();
+          const durStr = msg.duration > 0
+            ? ` · ${formatDuration(msg.duration)}`
+            : '';
+          detectedLang.textContent = `${langDisplay}${durStr}`;
+          detectedLang.classList.remove('hidden');
+          setStatus(`Transcription en cours — langue : ${langDisplay}`);
+          break;
+        }
+
+        case 'segment': {
+          const seg = msg.segment;
+          allSegments.push(seg);
+
+          // Supprime le message placeholder si présent
+          const placeholder = liveSegments.querySelector('.italic');
+          if (placeholder) placeholder.remove();
+
+          // Ajoute le segment animé
+          const div = document.createElement('div');
+          div.className = 'segment-enter flex gap-2';
+          div.innerHTML = `
+            <span class="text-purple-500 font-mono text-xs flex-shrink-0 mt-0.5 select-none">${msg.timestamp_display}</span>
+            <span class="text-zinc-300 text-xs leading-relaxed">${escapeHtml(seg.text)}</span>
+          `;
+          liveSegments.appendChild(div);
+          liveSegments.scrollTop = liveSegments.scrollHeight;
+
+          setProgress(msg.progress);
+          break;
+        }
+
+        case 'done':
+          setProgress(100);
+          setStatus(msg.message);
+          statusDot.classList.remove('status-blink');
+          statusDot.classList.replace('bg-purple-500', 'bg-green-500');
+          isProcessing = false;
+          buildResults(msg);
+          break;
+
+        case 'error':
+          isProcessing = false;
+          showError(msg.message);
+          break;
+
+        default:
+          console.warn('Message inconnu :', msg);
+      }
+    }
+
+
+    // ── Construction des résultats ────────────────────────────────────────────
+
+    function buildResults(msg) {
+      // Métadonnées
+      const langEl = detectedLang.textContent;
+      resultMeta.textContent = `${msg.segment_count} segment(s) · ${langEl}`;
+
+      // Transcription complète avec timestamps
+      transcriptContainer.innerHTML = '';
+      allSegments.forEach(seg => {
+        const div = document.createElement('div');
+        div.className = 'flex gap-3 group hover:bg-zinc-900/50 rounded-lg px-1 py-1.5 -mx-1 transition-colors';
+        div.innerHTML = `
+          <span class="text-purple-500/70 font-mono text-xs flex-shrink-0 mt-0.5 group-hover:text-purple-400 transition-colors select-none">
+            ${formatDisplayTs(seg.start)}
+          </span>
+          <span class="text-zinc-300 text-sm leading-relaxed">${escapeHtml(seg.text)}</span>
+        `;
+        transcriptContainer.appendChild(div);
+      });
+
+      showSection('results');
+      // Scroll doux vers les résultats
+      setTimeout(() => resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+
+
+    // ── Téléchargement ────────────────────────────────────────────────────────
+
+    function downloadFile(fmt) {
+      if (!currentTaskId) return;
+      const a = document.createElement('a');
+      a.href     = `/api/download/${currentTaskId}/${fmt}`;
+      a.download = `transcription.${fmt}`;
+      a.click();
+    }
+
+
+    // ── Copier dans le presse-papier ──────────────────────────────────────────
+
+    async function copyTranscript() {
+      const lines = allSegments.map(s => `${formatDisplayTs(s.start)} ${s.text}`).join('\n');
+      try {
+        await navigator.clipboard.writeText(lines);
+        const btn = $('copyBtn');
+        const orig = btn.innerHTML;
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Copié !`;
+        btn.classList.add('text-green-400');
+        setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('text-green-400'); }, 2000);
+      } catch (_) {
+        alert('Impossible d\'accéder au presse-papier. Copiez manuellement.');
+      }
+    }
+
+
+    // ── Reset ─────────────────────────────────────────────────────────────────
+
+    function reset() {
+      if (ws) { try { ws.close(); } catch (_) {} ws = null; }
+      isProcessing  = false;
+      currentTaskId = null;
+      selectedFile  = null;
+      allSegments   = [];
+      useGPU        = false;
+
+      // Réinitialise GPU toggle
+      gpuToggle.setAttribute('aria-checked', false);
+      gpuToggle.classList.remove('bg-purple-600');
+      gpuToggle.classList.add('bg-zinc-700');
+      gpuToggle.querySelector('.gpu-thumb').style.transform = 'translateX(0)';
+      gpuLabel.textContent = 'CPU uniquement';
+      gpuLabel.className   = 'text-sm text-zinc-400';
+      gpuBadge.classList.add('hidden');
+
+      // Réinitialise le fichier
+      clearFile();
+
+      // Réaffiche la section upload
+      showSection('upload');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+
+    // ── Utilitaires UI ────────────────────────────────────────────────────────
+
+    function showSection(name) {
+      uploadSection.classList.toggle  ('hidden', name !== 'upload');
+      progressSection.classList.toggle('hidden', name !== 'progress');
+      resultsSection.classList.toggle ('hidden', name !== 'results');
+      errorSection.classList.toggle   ('hidden', name !== 'error');
+    }
+
+    function showError(msg) {
+      isProcessing = false;
+      errorText.textContent = msg;
+      showSection('error');
+      // Laisse l'upload visible en dessous aussi pour réessayer
+      uploadSection.classList.remove('hidden');
+      errorSection.classList.remove('hidden');
+      progressSection.classList.add('hidden');
+      resultsSection.classList.add('hidden');
+      // Réactive le bouton
+      transcribeBtn.disabled = false;
+      if (fileInput.files.length > 0) {
+        transcribeBtn.className = `mt-4 w-full py-3 rounded-xl font-semibold text-sm transition-all duration-200
+          bg-purple-600 hover:bg-purple-500 active:scale-[0.99] text-white shadow-lg shadow-purple-900/30 cursor-pointer`;
+        transcribeBtn.textContent = 'Réessayer';
+      }
+    }
+
+    function setStatus(msg) {
+      statusText.textContent = msg;
+    }
+
+    function setProgress(pct) {
+      progressBar.style.width  = pct + '%';
+      progressPercent.textContent = pct + '%';
+      if (pct >= 100) {
+        progressBar.classList.remove('progress-bar-active');
+        progressBar.style.background = '#22c55e';
+      }
+    }
+
+
+    // ── Utilitaires format ────────────────────────────────────────────────────
+
+    function formatSize(bytes) {
+      if (bytes < 1024)            return bytes + ' o';
+      if (bytes < 1024 * 1024)     return (bytes / 1024).toFixed(1) + ' Ko';
+      return (bytes / (1024 * 1024)).toFixed(1) + ' Mo';
+    }
+
+    function formatDuration(secs) {
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      const s = Math.floor(secs % 60);
+      return h > 0 ? `${h}h ${m}m ${s}s` : m > 0 ? `${m}m ${s}s` : `${s}s`;
+    }
+
+    function formatDisplayTs(secs) {
+      const h = Math.floor(secs / 3600);
+      const m = Math.floor((secs % 3600) / 60);
+      const s = Math.floor(secs % 60);
+      return `[${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}]`;
+    }
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+  </script>
+
+</body>
+</html>

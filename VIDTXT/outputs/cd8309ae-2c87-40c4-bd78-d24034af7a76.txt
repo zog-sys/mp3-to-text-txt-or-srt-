@@ -1,0 +1,11 @@
+[00:00:00] cet outil va te permettre de payer que l'autre 90% moins cher parce que les
+[00:00:02] modèles ils ont un gros problème au niveau des tokens notamment quand
+[00:00:05] ils utilisent des commandes dans le terminal il y a énormément de bruit
+[00:00:08] qui augmente la consommation des tokens drastiquement et ça c'est un problème
+[00:00:11] qu'il y a par défaut. Cet outil va venir filtrer, compresser et nettoyer les
+[00:00:14] sorties, le modèle on va lui laisser que les infos utiles. Moins de token, moins de
+[00:00:17] coup tout en gardant le même contexte. Concrètement les commandes que le
+[00:00:20] modèle va utiliser vont être totalement optimisées. Le résultat c'est que ton
+[00:00:23] agent il reste tout autant efficace sans exploser ton budget de token. Si tu
+[00:00:27] veux y avoir accès tu peux commenter ce que tu veux cette vidéo et je te
+[00:00:29] remercie et on va du moment que tu me follow.

@@ -1,0 +1,9 @@
+[00:00:00] Ça c'est un répertoire de plusieurs centaines d'API gratuites que tu peux utiliser dès
+[00:00:03] maintenant avec l'OTCODE.
+[00:00:04] Elles sont organisées par catégories, finance, news, divertissement et bien plus.
+[00:00:07] Si tu construis un logiciel de finance, tu peux le connecter à une API de finance et
+[00:00:11] récupérer les données des marchés en temps réel par exemple dans ton application.
+[00:00:14] Ce répertoire est parfait pour les personnes qui créent des logiciels ou des sites, des
+[00:00:17] outils IA ou même des automatisations et c'est complètement gratuit.
+[00:00:20] Si tu veux l'essayer, tu peux commenter ce que tu veux sur cette vidéo et je te l'envoie
+[00:00:23] du monde que tu me folies.

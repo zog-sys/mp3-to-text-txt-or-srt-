@@ -1,0 +1,44 @@
+1
+00:00:00,000 --> 00:00:02,920
+cet outil va te permettre de payer que l'autre 90% moins cher parce que les
+
+2
+00:00:02,920 --> 00:00:05,400
+modèles ils ont un gros problème au niveau des tokens notamment quand
+
+3
+00:00:05,400 --> 00:00:08,320
+ils utilisent des commandes dans le terminal il y a énormément de bruit
+
+4
+00:00:08,320 --> 00:00:11,520
+qui augmente la consommation des tokens drastiquement et ça c'est un problème
+
+5
+00:00:11,520 --> 00:00:14,640
+qu'il y a par défaut. Cet outil va venir filtrer, compresser et nettoyer les
+
+6
+00:00:14,640 --> 00:00:17,840
+sorties, le modèle on va lui laisser que les infos utiles. Moins de token, moins de
+
+7
+00:00:17,840 --> 00:00:20,560
+coup tout en gardant le même contexte. Concrètement les commandes que le
+
+8
+00:00:20,560 --> 00:00:23,240
+modèle va utiliser vont être totalement optimisées. Le résultat c'est que ton
+
+9
+00:00:23,240 --> 00:00:27,080
+agent il reste tout autant efficace sans exploser ton budget de token. Si tu
+
+10
+00:00:27,080 --> 00:00:29,480
+veux y avoir accès tu peux commenter ce que tu veux cette vidéo et je te
+
+11
+00:00:29,480 --> 00:00:32,240
+remercie et on va du moment que tu me follow.
+

@@ -1,0 +1,18 @@
+[00:00:00] Tout le monde parle de Cloud Code, mais personne ne montre comment l'installer.
+[00:00:02] Alors je vais le faire pour vous et vous allez voir qu'il y a un méchant.
+[00:00:05] Première étape, vous allez installer VS Code.
+[00:00:07] Voyez ça comme un éditeur de texte avec beaucoup de fonctionnalités.
+[00:00:09] Une fois installé, vous l'ouvrez.
+[00:00:10] Ensuite, vous allez cliquer sur l'onglet Extensions.
+[00:00:13] Vous allez chercher Cloud et vous installer l'extension officielle de Cloud
+[00:00:16] avec la petite coche bleue.
+[00:00:18] Une fois installé, vous allez avoir cette petite icône en haut à droite de votre écran.
+[00:00:21] Vous cliquez dessus, vous cliquez sur le premier bouton en orange.
+[00:00:24] Ça va ouvrir votre navigateur web pour vous connecter à votre compte Cloud.
+[00:00:27] Si vous n'avez pas encore de compte, vous pouvez en créer un à ce moment-là.
+[00:00:29] Il vous faut un abonnement pour pouvoir l'utiliser.
+[00:00:31] Et vous êtes tout bon, vous pouvez commencer à travailler avec Cloud.
+[00:00:33] Il a accès à vos fichiers, à vos projets.
+[00:00:35] Et c'est une fenêtre de chatte, rien de plus basique, mais très très très puissant.
+[00:00:38] Si tu veux apprendre à tout construire avec Cloud et lia,
+[00:00:41] commente ce que tu veux sous cette vidéo et je t'envoie ce dont t'as besoin.
